@@ -1,5 +1,0 @@
-version: "3"
-
-modules:
-  - path: "jpa-module-test"
-    project: "jpa-module-test"
