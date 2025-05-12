@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.likelion.backendplus4.talkpick.tech.test'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+    compileOnly 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+}
+
+
+test {
+    useJUnitPlatform()
+}
