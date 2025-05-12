@@ -45,20 +45,13 @@ test {
     useJUnitPlatform()
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            register<MavenPublication>("release") {
-                from(components["release"])
-                groupId = "com.github.yj-circle"
-                artifactId = "study-2025"
-                version = "v1.0.0"
-
-                pom {
-                    name.set("common-jpa-entity")
-                    description.set("description")
-                }
-            }
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
         }
     }
 }
