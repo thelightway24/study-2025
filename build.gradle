@@ -5,8 +5,8 @@ plugins {
     id 'maven-publish'
 }
 
-group = 'com.likelion.backendplus4.talkpick.tech.test'
-version = '1.0.0'
+group = 'com.github.yj-circle'
+version = 'main-SNAPSHOT'
 
 java {
     toolchain {
@@ -38,6 +38,7 @@ tasks.matching { it.name == 'bootJar' }.configureEach {
 
 tasks.named('jar', Jar) {
     enabled = true
+    archiveBaseName.set("study-2025")
     exclude 'com.likelion.backendplus4.talkpick.common.dev/**'
 }
 
@@ -45,14 +46,14 @@ test {
     useJUnitPlatform()
 }
 
-jar {
-    archiveBaseName.set("study-2025")
-}
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
+            groupId = 'com.github.yj-circle'
+            artifactId = 'study-2025'
+            version = 'main-SNAPSHOT'
         }
     }
 }
