@@ -34,11 +34,3 @@ jobs:
             2. Key Changes
             3. Exception Handling Violations
                (only if violations exist)
-               
-          top_p:        1
-          temperature:  1
-          max_tokens:   10000
-
-          MAX_PATCH_LENGTH: 10000
-          IGNORE_PATTERNS: /node_modules/**/*,*.md
-          INCLUDE_PATTERNS: '*.java'
