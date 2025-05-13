@@ -45,6 +45,10 @@ test {
     useJUnitPlatform()
 }
 
+jar {
+    archiveBaseName.set("study-2025")
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
