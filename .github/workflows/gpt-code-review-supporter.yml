@@ -41,4 +41,4 @@ jobs:
 
           MAX_PATCH_LENGTH: 10000
           IGNORE_PATTERNS: /node_modules/**/*,*.md
-          INCLUDE_PATTERNS: *.java
+          INCLUDE_PATTERNS: '*.java'
