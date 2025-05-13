@@ -27,6 +27,7 @@ public class Main {
 			int sumI = Integer.parseInt(userInput3.nextToken());
 			int sumJ = Integer.parseInt(userInput3.nextToken());
 			int result = 0;
+			int test = 0;
             
 			if(sumI > 1) {
 				result = sumArray[sumJ-1] - sumArray[sumI-2];
