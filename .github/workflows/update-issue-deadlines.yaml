@@ -12,6 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Update D-n Labels
-        uses: yj-circle/issue-d-day-labeler@v1.0.0
+        uses: yj-circle/issue-d-day-labeler@latest
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
