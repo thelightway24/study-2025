@@ -9,28 +9,13 @@ on:
     types: [opened, reopened, synchronize]
 
 jobs:
-  review:
+  pr-gpt-summary:
     runs-on: ubuntu-latest
     steps:
-      - name: ChatGPT Code Review
-        uses: anc95/ChatGPT-CodeReview@main
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          GITHUB_TOKEN:   ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v3
 
-          LANGUAGE:        Korean
-          MODEL:           gpt-4.1-nano
-          OPENAI_API_ENDPOINT: https://api.openai.com/v1
-
-          PROMPT: |
-            You are an AI code review assistant.
-            Follow these conventions strictly:
-            - Private methods must catch all exceptions using try–catch.
-            - Public methods must NOT use any try–catch.
-
-            Produce exactly these sections:
-
-            1. Changed Files
-            2. Key Changes
-            3. Exception Handling Violations
-               (only if violations exist)
+      - name: PR 요약 코멘트
+        uses: yj-circle/gpt-pr-supporter@v0.0.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          openai_api_key: ${{ secrets.OPENAI_API_KEY }}
