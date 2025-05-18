@@ -32,4 +32,4 @@ jobs:
           PROJECT_NUMBER: '2'
           OWNER: ${{ github.repository_owner }}
           REPO:  ${{ github.event.repository.name }}
-        run: python scripts/update_issue_deadlines.py
+        run: python .github/workflows/scripts/update_issue_deadlines.py
