@@ -5,7 +5,7 @@ on:
   schedule:
     # 매일 KST 자정(UTC 15:00)에 실행
     - cron: '0 15 * * *'
-
+  workflow_dispatch:
 permissions:
   issues: write
 
