@@ -1,74 +1,17 @@
-# .github/workflows/decrement-dn-issue-labels.yml
 name: Decrement D-n labels on issues
 
 on:
   schedule:
-    # 매일 KST 자정(UTC 15:00)에 실행
     - cron: '0 15 * * *'
   workflow_dispatch:
 permissions:
   issues: write
 
 jobs:
-  decrement-dn-labels:
+  d-day:
     runs-on: ubuntu-latest
     steps:
-      - name: Decrement D-n / Handle D-day & Overdue
-        uses: actions/github-script@v6
+      - name: Update D-n Labels
+        uses: yj-circle/issue-d-day-labeler@v1.0.0
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const issues = await github.paginate(
-              github.rest.issues.listForRepo,
-              {
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                state: 'open'
-              }
-            );
-
-            for (const issue of issues) {
-              for (const lbl of issue.labels) {
-                const m = /^D-(\d+)$/.exec(lbl.name);
-                if (!m) continue;
-
-                const n = parseInt(m[1], 10);
-                const next = n - 1;
-
-                // 1) 기존 D-n 라벨 제거
-                await github.rest.issues.removeLabel({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: issue.number,
-                  name: lbl.name
-                });
-
-                // 2) next > 0 → D-(n-1)
-                if (next > 0) {
-                  await github.rest.issues.addLabels({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    issue_number: issue.number,
-                    labels: [`D-${next}`]
-                  });
-
-                // 3) next === 0 → D-day
-                } else if (next === 0) {
-                  await github.rest.issues.addLabels({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    issue_number: issue.number,
-                    labels: ['D-day']
-                  });
-
-                // 4) next < 0 → Overdue
-                } else {
-                  await github.rest.issues.addLabels({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    issue_number: issue.number,
-                    labels: ['Overdue']
-                  });
-                }
-              }
-            }
+          token: ${{ secrets.GITHUB_TOKEN }}
