@@ -1,12 +1,11 @@
 # .github/workflows/decrement-dn-issue-labels.yml
 name: Decrement D-n labels on issues
 
-# 매일 KST 자정(UTC 기준 15:00)에 실행
 on:
   schedule:
+    # 매일 KST 자정(UTC 15:00)에 실행
     - cron: '0 15 * * *'
-  workflow_dispatch:
-# 이슈 라벨 수정 권한을 명시적으로 줍니다
+
 permissions:
   issues: write
 
@@ -14,12 +13,11 @@ jobs:
   decrement-dn-labels:
     runs-on: ubuntu-latest
     steps:
-      - name: Decrement D-n labels
+      - name: Decrement D-n / Handle D-day & Overdue
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            // 1) 열려 있는 모든 이슈를 불러옵니다 (페이지네이션 처리)
             const issues = await github.paginate(
               github.rest.issues.listForRepo,
               {
@@ -31,14 +29,13 @@ jobs:
 
             for (const issue of issues) {
               for (const lbl of issue.labels) {
-                // 2) "D-숫자" 형태의 라벨만 골라내기
                 const m = /^D-(\d+)$/.exec(lbl.name);
                 if (!m) continue;
 
                 const n = parseInt(m[1], 10);
                 const next = n - 1;
 
-                // 3) 기존 라벨 제거
+                // 1) 기존 D-n 라벨 제거
                 await github.rest.issues.removeLabel({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
@@ -46,15 +43,32 @@ jobs:
                   name: lbl.name
                 });
 
-                // 4) next >= 0 이면 새 라벨 추가
-                if (next >= 0) {
+                // 2) next > 0 → D-(n-1)
+                if (next > 0) {
                   await github.rest.issues.addLabels({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
                     issue_number: issue.number,
                     labels: [`D-${next}`]
                   });
+
+                // 3) next === 0 → D-day
+                } else if (next === 0) {
+                  await github.rest.issues.addLabels({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: issue.number,
+                    labels: ['D-day']
+                  });
+
+                // 4) next < 0 → Overdue
+                } else {
+                  await github.rest.issues.addLabels({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: issue.number,
+                    labels: ['Overdue']
+                  });
                 }
-                // next < 0 이면 라벨만 제거하고 그대로 두거나, 원하시면 close도 할 수 있음
               }
             }
