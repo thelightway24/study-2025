@@ -1,0 +1,3 @@
+https://hibernate.org/orm/
+https://hibernate.org/
+https://docs.spring.io/spring-boot/appendix/dependency-versions/coordinates.html
