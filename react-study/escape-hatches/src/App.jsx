@@ -1,33 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useRef, useState } from 'react'
 import './App.css'
+import Counter from './components/Referencing-Ref'
+import Form from './components/Manipulating-the-DOM'
+import MyInput from './components/Input-Components-With-Ref'
 
 function App() {
   const [count, setCount] = useState(0)
-
+  let myInputRef = useRef(null)
+  function clickRefFocus() {
+    myInputRef.current.focus();
+  }
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <p>Ref로 값 참조하기</p>
+      <Counter/>
+
+      <p>Ref로 DOM 조작하기 </p>
+      <Form/>
+      <p>컴포넌트로 Ref 보내서 제어</p>
+      <MyInput ref={myInputRef}/>
+      <button onClick={clickRefFocus}>
+        Click me!
+      </button>
     </>
   )
 }
